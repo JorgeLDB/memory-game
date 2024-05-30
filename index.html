@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Memory game</title>
+    </head>
+    <body>
+        <header>
+            <script>
+                let images = [
+                    "images/truck.png",
+                    "images/truck.png",
+                    "images/smile.png",
+                    "images/smile.png",
+                    "images/flower.png",
+                    "images/flower.png",
+                    "images/star.png",
+                    "images/star.png",
+                ];
+
+                // Shuffle array with "Algorithm P (Shuffling)", a variant of Fisher-Yates shuffle
+                // https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#The_modern_algorithm
+                for (let idx = images.length - 1; idx > 0; idx--) {
+                    let new_idx = Math.floor(Math.random() * (idx + 1));
+                    [images[idx], images[new_idx]] = [images[new_idx], images[idx]];
+                }
+
+                let state = images.map((x) => {
+                    return { current: "hidden", image: x };
+                });
+                let blocked = false;
+
+                function onClickImage(number) {
+                    console.log("Clicked image " + (number + 1));
+                    if (blocked) {
+                        console.log( "State is blocked. Wait a moment please...",);
+                        return;
+                    }
+
+                    if ( state[number - 1].current === "selected" || state[number - 1].current === "paired") {
+                        return;
+                    }
+
+                    let element = document.querySelector("#i" + number);
+                    element.setAttribute("src", state[number - 1].image);
+                    state[number - 1].current = "selected";
+
+                    verifyPair();
+                }
+
+                function onResetClick() {
+                    // Shuffle array with "Algorithm P (Shuffling)", a variant of Fisher-Yates shuffle
+                    // https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#The_modern_algorithm
+                    for (let idx = images.length - 1; idx > 0; idx--) {
+                        let new_idx = Math.floor(Math.random() * (idx + 1));
+                        [images[idx], images[new_idx]] = [images[new_idx], images[idx]];
+                    }
+                    state = images.map((x, idx) => {
+                        let number = idx + 1;
+                        let element = document.querySelector("#i" + number);
+                        element.setAttribute( "src", "images/question_mark.png");
+                        return { current: "hidden", image: x };
+                    });
+                    let element = document.querySelector("#winner-container")
+                    element.style.visibility = "hidden";
+                    blocked = false;
+                }
+
+                function verifyWinner() {
+                    if (state.every( (x) => x.current === "paired")) {
+                        console.log("Congratulations, you win!!!");
+                        let winner_element = document.querySelector("#winner-container");
+                        winner_element.style.visibility = "visible";
+                    }
+                }
+
+                function verifyPair() {
+                    blocked = true;
+                    let selected_state = state.filter( (curr_state) => curr_state.current === "selected");
+                    if (selected_state.length <= 1) {
+                        console.log("Selected first image");
+                        blocked = false;
+                        return;
+                    } else if (selected_state.length > 2) {
+                        console.log("Something went wrong.");
+                        blocked = false;
+                        return;
+                    }
+
+                    // Verify if pair is correct
+                    if (selected_state[0].image === selected_state[1].image) {
+                        console.log("Pair found!!!");
+                        state = state.map((x) => {
+                            if (x.current === "selected") {
+                                return { current: "paired", image: x.image };
+                            }
+                            return x;
+                        });
+                        blocked = false;
+                        verifyWinner();
+                        return;
+                    }
+
+                    console.log( "Invalid pair, resetting images. Please wait 2 seconds.");
+                    setTimeout(() => {
+                        state = state.map((x, idx) => {
+                            if (x.current === "selected") {
+                                let number = idx + 1;
+                                let element = document.querySelector("#i" + number);
+                                element.setAttribute( "src", "images/question_mark.png");
+                                return { current: "hidden", image: x.image };
+                            }
+                            return x;
+                        });
+                        blocked = false;
+                    }, 2000); // Run this code block 2000 miliseconds later
+                }
+            </script>
+        </header>
+        <div id="main-container" style="flex-direction: column">
+            <div id="winner-container" style="visibility: hidden; display: flex; flex-direction: row;">
+                <p>You win!!</p>
+                <button id="reset-button" onclick="onResetClick()">Play again</button>
+            </div>
+            <div class="row" style="display: flex; flex-direction: row">
+                <div class="image-container"> <img style="height: 200px; width: 200px" src="images/question_mark.png" id="i1" alt="No img" onclick="onClickImage(1)" /> </div>
+                <div class="image-container"> <img style="height: 200px; width: 200px" src="images/question_mark.png" id="i2" alt="No img" onclick="onClickImage(2)" /> </div>
+                <div class="image-container"> <img style="height: 200px; width: 200px" src="images/question_mark.png" id="i3" alt="No img" onclick="onClickImage(3)" /> </div>
+                <div class="image-container"> <img style="height: 200px; width: 200px" src="images/question_mark.png" id="i4" alt="No img" onclick="onClickImage(4)" /> </div>
+            </div>
+            <div class="row" style="display: flex; flex-direction: row">
+                <div class="image-container"> <img style="height: 200px; width: 200px" src="images/question_mark.png" id="i5" alt="No img" onclick="onClickImage(5)" /> </div>
+                <div class="image-container"> <img style="height: 200px; width: 200px" src="images/question_mark.png" id="i6" alt="No img" onclick="onClickImage(6)" /> </div>
+                <div class="image-container"> <img style="height: 200px; width: 200px" src="images/question_mark.png" id="i7" alt="No img" onclick="onClickImage(7)" /> </div>
+                <div class="image-container"> <img style="height: 200px; width: 200px" src="images/question_mark.png" id="i8" alt="No img" onclick="onClickImage(8)" /> </div>
+            </div>
+        </div>
+    </body>
+</html>
