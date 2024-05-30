@@ -32,7 +32,7 @@
                 let blocked = false;
 
                 function onClickImage(number) {
-                    console.log("Clicked image " + (number + 1));
+                    console.log("Clicked image " + (number));
                     if (blocked) {
                         console.log( "State is blocked. Wait a moment please...",);
                         return;
@@ -63,7 +63,7 @@
                         return { current: "hidden", image: x };
                     });
                     let element = document.querySelector("#winner-container")
-                    element.style.visibility = "hidden";
+                    element.style.display = "none";
                     blocked = false;
                 }
 
@@ -71,7 +71,7 @@
                     if (state.every( (x) => x.current === "paired")) {
                         console.log("Congratulations, you win!!!");
                         let winner_element = document.querySelector("#winner-container");
-                        winner_element.style.visibility = "visible";
+                        winner_element.style.display = "flex";
                     }
                 }
 
@@ -118,22 +118,22 @@
                 }
             </script>
         </header>
-        <div id="main-container" style="flex-direction: column">
-            <div id="winner-container" style="visibility: hidden; display: flex; flex-direction: row;">
-                <p>You win!!</p>
-                <button id="reset-button" onclick="onResetClick()">Play again</button>
+        <div id="main-container" style="display: flex; flex-direction: column; row-gap: 10px">
+            <div id="winner-container" style="display: none; flex-direction: column; width: 800px; align-items: center;">
+                <div style="font-size: 30px; width: 400px; text-align: center;">You win!!</div>
+                <button id="reset-button" onclick="onResetClick()" style="width: 400px; font-size: 30px; text-align: center; border-radius: 16px;">Play again</button>
             </div>
-            <div class="row" style="display: flex; flex-direction: row">
-                <div class="image-container"> <img style="height: 200px; width: 200px" src="images/question_mark.png" id="i1" alt="No img" onclick="onClickImage(1)" /> </div>
-                <div class="image-container"> <img style="height: 200px; width: 200px" src="images/question_mark.png" id="i2" alt="No img" onclick="onClickImage(2)" /> </div>
-                <div class="image-container"> <img style="height: 200px; width: 200px" src="images/question_mark.png" id="i3" alt="No img" onclick="onClickImage(3)" /> </div>
-                <div class="image-container"> <img style="height: 200px; width: 200px" src="images/question_mark.png" id="i4" alt="No img" onclick="onClickImage(4)" /> </div>
+            <div class="row" style="display: flex; flex-direction: row; column-gap: 10px;">
+                <div class="image-container"> <img style="height: 200px; width: 200px; border: 1px solid; border-radius: 16px;" src="images/question_mark.png" id="i1" alt="No img" onclick="onClickImage(1)" /> </div>
+                <div class="image-container"> <img style="height: 200px; width: 200px; border: 1px solid; border-radius: 16px;" src="images/question_mark.png" id="i2" alt="No img" onclick="onClickImage(2)" /> </div>
+                <div class="image-container"> <img style="height: 200px; width: 200px; border: 1px solid; border-radius: 16px;" src="images/question_mark.png" id="i3" alt="No img" onclick="onClickImage(3)" /> </div>
+                <div class="image-container"> <img style="height: 200px; width: 200px; border: 1px solid; border-radius: 16px;" src="images/question_mark.png" id="i4" alt="No img" onclick="onClickImage(4)" /> </div>
             </div>
-            <div class="row" style="display: flex; flex-direction: row">
-                <div class="image-container"> <img style="height: 200px; width: 200px" src="images/question_mark.png" id="i5" alt="No img" onclick="onClickImage(5)" /> </div>
-                <div class="image-container"> <img style="height: 200px; width: 200px" src="images/question_mark.png" id="i6" alt="No img" onclick="onClickImage(6)" /> </div>
-                <div class="image-container"> <img style="height: 200px; width: 200px" src="images/question_mark.png" id="i7" alt="No img" onclick="onClickImage(7)" /> </div>
-                <div class="image-container"> <img style="height: 200px; width: 200px" src="images/question_mark.png" id="i8" alt="No img" onclick="onClickImage(8)" /> </div>
+            <div class="row" style="display: flex; flex-direction: row; column-gap: 10px;">
+                <div class="image-container"> <img style="height: 200px; width: 200px; border: 1px solid; border-radius: 16px;" src="images/question_mark.png" id="i5" alt="No img" onclick="onClickImage(5)" /> </div>
+                <div class="image-container"> <img style="height: 200px; width: 200px; border: 1px solid; border-radius: 16px;" src="images/question_mark.png" id="i6" alt="No img" onclick="onClickImage(6)" /> </div>
+                <div class="image-container"> <img style="height: 200px; width: 200px; border: 1px solid; border-radius: 16px;" src="images/question_mark.png" id="i7" alt="No img" onclick="onClickImage(7)" /> </div>
+                <div class="image-container"> <img style="height: 200px; width: 200px; border: 1px solid; border-radius: 16px;" src="images/question_mark.png" id="i8" alt="No img" onclick="onClickImage(8)" /> </div>
             </div>
         </div>
     </body>
